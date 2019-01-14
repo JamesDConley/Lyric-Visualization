@@ -2,6 +2,10 @@ import matplotlib.pyplot as plt
 import pickle
 import pandas as pd
 import time
+import plotly as plotly
+py = plotly.offline
+import plotly.graph_objs as go
+import numpy as np
 def pickleLoad(filename):
     pickleIn = open(filename,  'rb')
     temp = pickle.load(pickleIn)
@@ -26,7 +30,27 @@ points = pd.DataFrame(
     columns=["word", "x", "y"]
 )
   
-points.plot.scatter("x", "y", s=1)
+
+N = 100000
+
+trace = go.Scattergl(
+    x = points['x'], 
+    y = points['y'],
+    text = points['word'], 
+    mode = 'markers',
+    marker = dict(
+        color = '#FFBAD2',
+        line = dict(width = 1)
+    )
+)
+print("this far")
+data = [trace]
+layout = plotly.graph_objs.Layout(hovermode='closest')
+figure = plotly.graph_objs.Figure(data=data, layout=layout)
+print("that far")
+py.plot(figure)
+  
+#points.plot.scatter("x", "y", s=1)
 #print(points)
 #plt.show()
 
@@ -36,7 +60,7 @@ points.plot.scatter("x", "y", s=1)
 #        break
 
 
-plt.show()
+#plt.show()
 print("plotted")
 #time.sleep(10)
 

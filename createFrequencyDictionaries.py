@@ -32,7 +32,11 @@ for row in csv_reader:
             genres[row[genreColumn]] = {}               #If we don't have a dictionary for this genre, add one
             genres[row[genreColumn]]["total words"] = 0 #Add an entry to keep track of the total number of words in this genre (We know "total words" is a safe entry because all other indexes will have no whitespace
         #This section does a similar stint within the given genre for each word
-        for word in row[lyricColumn].split(' '):
+        lyrics = row[lyricColumn].replace(".", " ")
+        lyrics = lyrics.replace("?", " ")
+        lyrics = lyrics.replace("!",  " ")
+        lyrics = lyrics.replace("\n",  " ")
+        for word in lyrics.split(' '):
             #Convert all words to lowercase, removing everything but letters
             cleanedWord = word.lower()
             cleanedWord = ''.join(letter for letter in cleanedWord if letter.isalpha() )
@@ -59,3 +63,4 @@ pickleOut.close()
 pickleOut = open("wordFrequencyDict.pickle",  "wb")
 pickle.dump(globalFrequencyDict,  pickleOut)
 pickleOut.close()
+print("done")

@@ -34,7 +34,7 @@ for row in csv_reader:
             lyrics = lyrics.lower()
             
             lyrics = ''.join(item for item in lyrics if (item.isalpha() or item == ' '))
-            print(lyrics)
+            #print(lyrics)
             genreListDict[row[genreColumn]].append(lyrics)
         else:
             genreListDict[row[genreColumn]] = []

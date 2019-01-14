@@ -5,6 +5,7 @@ import seaborn as sns
 #from tsnecuda import TSNE
 from MulticoreTSNE import MulticoreTSNE as TSNE
 from gensim.models import Word2Vec
+import time
 def pickleLoad(filename):
     pickleIn = open(filename,  'rb')
     temp = pickle.load(pickleIn)
@@ -14,11 +15,11 @@ def pickleSave(filename,  object):
     pickleOut = open(filename,  'wb')
     pickle.dump(object,  pickleOut)
     pickleOut.close()
-
+startTime = time.clock()
 w2v = pickleLoad('w2v.pickle')
 #all_word_vectors_matrix = w2v.wv.syn0
 print("loaded")
-embedded = TSNE(init = 1,  n_jobs=7).fit_transform(w2v.wv.syn0)
+embedded = TSNE(n_jobs=7).fit_transform(w2v.wv.syn0)
 
 
 all_word_vectors_matrix_2d = embedded
@@ -34,5 +35,7 @@ points = pd.DataFrame(
     columns=["word", "x", "y"]
 )
 pickleSave('embedded.pickle',  embedded)
-sns.set_context("poster")
-points.plot.scatter("x", "y", s=10, figsize=(20, 12))
+endTime = time.clock()
+print("Elapsed Minutes : " + str((endTime-startTime)/60))
+#sns.set_context("poster")
+#points.plot.scatter("x", "y", s=10, figsize=(20, 12))
