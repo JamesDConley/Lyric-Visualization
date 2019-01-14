@@ -3,6 +3,7 @@ from gensim.models import Word2Vec
 import pickle
 import multiprocessing
 import time
+
 startTime = time.clock()
 def pickleSave(filename,  object):
     pickleOut = open(filename,  'wb')
