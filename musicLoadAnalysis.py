@@ -12,7 +12,8 @@ pickleIn = open("wordFrequencyDict.pickle",  "rb")
 globalDict = pickle.load(pickleIn)
 pickleIn.close()
 
-
+print(globalDict['donã'])
+print(genresDict['Rock']['donã'])
 
 print(genresDict.keys())
 for genre in genresDict.keys():

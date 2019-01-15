@@ -5,6 +5,7 @@ import multiprocessing
 import time
 
 startTime = time.clock()
+
 def pickleSave(filename,  object):
     pickleOut = open(filename,  'wb')
     pickle.dump(object,  pickleOut)
@@ -17,7 +18,15 @@ def pickleLoad(filename):
     return temp
 def removeNonAlpha(text):
     return ''.join(letter for letter in text if letter.isalpha() or letter == " ").lower()
-
+genreDict = pickleLoad('genreDict.pickle')
+def getCommonGenre(word):
+    max = 0
+    maxgenre = ''
+    for genre in genreDict.keys():
+        if word in genreDict[genre].keys() and genreDict[genre][word] > max:
+            max = genreDict[genre][word]
+            maxgenre = genre
+    return maxgenre
 #Reading in the raw data
 lyricFile = open('lyrics.csv')      
 csv_reader = csv.reader(lyricFile,  delimiter=',')
@@ -32,7 +41,12 @@ lines = []
 for row in csv_reader:
     for line in row[lyricColumn].split("\n"):
         if row[4] not in ['Not Available',  'Other',  'Electronic']:
+            if "donã" in line:
+                print("IT HERE")
             words = removeNonAlpha(line).split(" ")
+            if 'donã' in words:
+                print(line)
+                print("IT THERE")
             lines.append(words)
 
 num_workers = multiprocessing.cpu_count()
@@ -44,4 +58,5 @@ w2v.train(lines,  total_examples = w2v.corpus_count,  epochs = 10)
 pickleSave("w2v.pickle", w2v)
 endTime = time.clock()
 print(w2v.wv['love'])
+print(w2v.wv['donã'])
 print("Elapsed Minutes : " + str((endTime-startTime)/60))

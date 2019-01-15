@@ -18,7 +18,7 @@ def pickleSave(filename,  object):
 genreDict = pickleLoad('genreDict.pickle')
 def getCommonGenre(word):
     max = 0
-    maxgenre = ''
+    maxgenre = 'Indie'
     for genre in genreDict.keys():
         if word in genreDict[genre].keys() and genreDict[genre][word] > max:
             max = genreDict[genre][word]
