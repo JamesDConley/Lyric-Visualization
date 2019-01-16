@@ -5,6 +5,16 @@ import pickle           #For saving our Dictionaries so we don't have to run thi
 #Reading in the raw data
 lyricFile = open('lyrics.csv')      
 csv_reader = csv.reader(lyricFile,  delimiter=',')
+def pickleSave(filename,  object):
+    pickleOut = open('pickledObjects/' + filename,  'wb')
+    pickle.dump(object,  pickleOut)
+    pickleOut.close()
+
+def pickleLoad(filename):
+    pickleIn = open('pickledObjects/' + filename,  'rb')
+    temp = pickle.load(pickleIn)
+    pickleIn.close()
+    return temp
 
 #Setting these here will make it easier to use this code on similar datasets
 lyricColumn = 5
@@ -56,12 +66,9 @@ for row in csv_reader:
                 globalFrequencyDict["total words"]+=1
         count+=1
 #Write out the genre dictionaries!
-pickleOut = open("genreDict.pickle",  "wb")
-pickle.dump(genres, pickleOut)
-pickleOut.close()
+pickleSave(genres, "genreDict.pickle")
 
 #Write out the global dictionary!
-pickleOut = open("wordFrequencyDict.pickle",  "wb")
-pickle.dump(globalFrequencyDict,  pickleOut)
-pickleOut.close()
+pickleSave(globalFrequencyDict,  "wordFrequencyDict.pickle")
+
 print("done")

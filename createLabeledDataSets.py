@@ -1,7 +1,17 @@
 import csv              #For reading from the CSV
 import pickle           #For saving our Dictionaries so we don't have to run this whole thing each time!
 
+def pickleSave(filename,  object):
+    pickleOut = open('pickledObjects/' + filename,  'wb')
+    pickle.dump(object,  pickleOut)
+    pickleOut.close()
 
+def pickleLoad(filename):
+    pickleIn = open('pickledObjects/' + filename,  'rb')
+    temp = pickle.load(pickleIn)
+    pickleIn.close()
+    return temp
+    
 #Reading in the raw data
 lyricFile = open('lyrics.csv')      
 csv_reader = csv.reader(lyricFile,  delimiter=',')
@@ -40,12 +50,8 @@ for row in csv_reader:
             genreListDict[row[genreColumn]] = []
     count+=1
 
-pickleOut = open('genreListDict90.pickle', 'wb')
-pickle.dump(genreListDict90, pickleOut)
-pickleOut.close()
+pickleSave(genreListDict90, 'genreListDict90.pickle')
+pickleSave(genreListDict10, "genreListDict10.pickle")
 
-pickleOut = open("genreListDict10.pickle", "wb")
-pickle.dump(genreListDict10, pickleOut)
-pickleOut.close()
 
 print("done")

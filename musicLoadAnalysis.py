@@ -3,17 +3,22 @@ import heapq
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
+def pickleSave(filename,  object):
+    pickleOut = open('pickledObjects/' + filename,  'wb')
+    pickle.dump(object,  pickleOut)
+    pickleOut.close()
+
+def pickleLoad(filename):
+    pickleIn = open('pickledObjects/' + filename,  'rb')
+    temp = pickle.load(pickleIn)
+    pickleIn.close()
+    return temp
 genreHeapsDict = {}
-pickleIn = open("genreDict.pickle",  "rb")
-genresDict = pickle.load(pickleIn)
-pickleIn.close()
+genresDict = pickleLoad("genreDict.pickle")
 
-pickleIn = open("wordFrequencyDict.pickle",  "rb")
-globalDict = pickle.load(pickleIn)
-pickleIn.close()
+globalDict = pickleLoad("wordFrequencyDict.pickle")
 
-print(globalDict['donã'])
-print(genresDict['Rock']['donã'])
+
 
 print(genresDict.keys())
 for genre in genresDict.keys():
