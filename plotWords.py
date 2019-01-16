@@ -1,8 +1,7 @@
-import matplotlib.pyplot as plt
 import pickle
 import pandas as pd
-import time
 import plotly as plotly
+import math
 py = plotly.offline
 import random
 import numpy as np
@@ -26,9 +25,12 @@ def getCommonGenre(word):
     return maxgenre
 w2v = pickleLoad('w2v.pickle')
 embedded = pickleLoad('embedded.pickle')
-#plt.figure()
 points = pickleLoad('points.pickle')
-
+frequencyDict = pickleLoad('wordFrequencyDict.pickle')
+sizes = []
+for word in points['word']:
+    sizes.append(math.log(frequencyDict[word], 1.8))
+points['size'] = pd.Series(sizes)
 
 import plotly as plotly
 py = plotly.offline
@@ -42,7 +44,11 @@ for word in points['word']:
     genreLists[genre].append(word)
 scatters = []
 print(0)
-for genre in genreDict.keys():
+genres = [e for e in genreDict.keys()]
+colors = ['#800000','#ffe119','#3cc44b',"#000075",'#911eb4',"#e6194b","#808000","#000000","#ffd8b1"]
+for i in range(len(genreDict.keys())):
+    tempColor = colors[i]
+    genre = genres[i]
     tempPoints = points.loc[points['word'].isin(genreLists[genre])]
     randColor = ("#%06x" % random.randint(0, 0xFFFFFF))
     print(1)
@@ -53,21 +59,13 @@ for genre in genreDict.keys():
             text = tempPoints['word'], 
             mode = 'markers',
             marker = dict(
-                color = randColor,
-                line = dict(width = 1)
+                color = tempColor,
+                line = dict(width = 1), 
+                size = tempPoints['size']
             ), name = genre
     ))
 
-trace = go.Scattergl(
-    x = points['x'], 
-    y = points['y'],
-    text = points['word'], 
-    mode = 'markers',
-    marker = dict(
-        color = "#FFBAD2",
-        line = dict(width = 1)
-    )
-)
+
 
 #data = [trace]
 data = scatters
