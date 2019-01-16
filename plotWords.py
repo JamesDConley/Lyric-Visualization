@@ -5,15 +5,16 @@ import math
 py = plotly.offline
 import random
 import numpy as np
+def pickleSave(filename,  object):
+    pickleOut = open('pickledObjects/' + filename,  'wb')
+    pickle.dump(object,  pickleOut)
+    pickleOut.close()
+
 def pickleLoad(filename):
-    pickleIn = open(filename,  'rb')
+    pickleIn = open('pickledObjects/' + filename,  'rb')
     temp = pickle.load(pickleIn)
     pickleIn.close()
     return temp
-def pickleSave(filename,  object):
-    pickleOut = open(filename,  'wb')
-    pickle.dump(object,  pickleOut)
-    pickleOut.close()
 genreDict = pickleLoad('genreDict.pickle')
 def getCommonGenre(word):
     max = 0
