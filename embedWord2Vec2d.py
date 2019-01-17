@@ -50,15 +50,15 @@ top10kVectors = np.array(top10kVectors)
 print("loaded")
 
 
-embedded = TSNE(n_jobs=7).fit_transform(top10kVectors)
+embedded = TSNE(n_jobs=7,  perplexity=30, early_exaggeration=25,  learning_rate=200,  n_iter = 10000).fit_transform(w2v.wv.syn0 )
 print("done")
 
 points = pd.DataFrame(
     [
         (word, coords[0], coords[1])
         for word, coords in [
-            (top10kWords[i], embedded[i])
-            for i in range(len(top10kWords))
+            (word, embedded[w2v.wv.vocab[word].index])
+            for word in w2v.wv.vocab
         ]
     ],
     columns=["word", "x", "y"]

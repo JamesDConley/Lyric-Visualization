@@ -20,7 +20,7 @@ def getCommonGenre(word):
     max = 0
     maxgenre = 'Indie'
     for genre in genreDict.keys():
-        if word in genreDict[genre].keys() and genreDict[genre][word] > max:
+        if word in genreDict[genre].keys() and genreDict[genre][word]/genreDict[genre]['total words'] > max:
             max = genreDict[genre][word]
             maxgenre = genre
     return maxgenre
@@ -30,7 +30,10 @@ points = pickleLoad('points.pickle')
 frequencyDict = pickleLoad('wordFrequencyDict.pickle')
 sizes = []
 for word in points['word']:
-    sizes.append(math.log(frequencyDict[word], 1.8))
+    if word in frequencyDict.keys():
+        sizes.append(math.log(frequencyDict[word], 1.8))
+    else:
+        sizes.append(math.log(20, 1.8))
 points['size'] = pd.Series(sizes)
 
 import plotly as plotly

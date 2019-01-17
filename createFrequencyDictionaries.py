@@ -3,7 +3,7 @@ import pickle           #For saving our Dictionaries so we don't have to run thi
 
 
 #Reading in the raw data
-lyricFile = open('lyrics.csv')      
+lyricFile = open('cleanedLyrics.csv')      
 csv_reader = csv.reader(lyricFile,  delimiter=',')
 def pickleSave(filename,  object):
     pickleOut = open('pickledObjects/' + filename,  'wb')
@@ -17,8 +17,8 @@ def pickleLoad(filename):
     return temp
 
 #Setting these here will make it easier to use this code on similar datasets
-lyricColumn = 5
-genreColumn = 4
+lyricColumn = 6
+genreColumn = 5
 
 #This dictionary will be indexed with a genre to produce another dictionary that takes in a word and gives the frequency of that word within that genre
 genres = {}
@@ -34,6 +34,7 @@ for row in csv_reader:
     if count == 0:
         print("Skipped First Line")
         count+=1
+        
     else:
         if row[genreColumn] not in ['Not Available',  'Other',  'Electronic']:
             genreDict = {}  #Dummy Variable
@@ -53,7 +54,7 @@ for row in csv_reader:
                 cleanedWord = ''.join(letter for letter in cleanedWord if letter.isalpha() )
                 
                 #Now fill up the dictionary!
-                if cleanedWord in genres[row[4]]:
+                if cleanedWord in genres[row[genreColumn]]:
                     genres[row[genreColumn]][cleanedWord] +=1
                 else:
                     genres[row[genreColumn]][cleanedWord] = 1
@@ -66,9 +67,9 @@ for row in csv_reader:
                 globalFrequencyDict["total words"]+=1
         count+=1
 #Write out the genre dictionaries!
-pickleSave(genres, "genreDict.pickle")
+pickleSave( "genreDict.pickle", genres)
 
 #Write out the global dictionary!
-pickleSave(globalFrequencyDict,  "wordFrequencyDict.pickle")
+pickleSave(  "wordFrequencyDict.pickle", globalFrequencyDict)
 
 print("done")

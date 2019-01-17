@@ -28,35 +28,30 @@ def getCommonGenre(word):
             maxgenre = genre
     return maxgenre
 #Reading in the raw data
-lyricFile = open('lyrics.csv')      
+lyricFile = open('cleanedLyrics.csv')      
 csv_reader = csv.reader(lyricFile,  delimiter=',')
 
 #Setting these here will make it easier to use this code on similar datasets
-lyricColumn = 5
-genreColumn = 4
+lyricColumn = 6
+genreColumn = 5
 
 lines = []
 
 #Sentences will be lines of songs
 for row in csv_reader:
     for line in row[lyricColumn].split("\n"):
-        if row[4] not in ['Not Available',  'Other',  'Electronic']:
-            if "donã" in line:
-                print("IT HERE")
+        if row[genreColumn] not in ['Not Available',  'Other',  'Electronic']:
             words = removeNonAlpha(line).split(" ")
-            if 'donã' in words:
-                print(line)
-                print("IT THERE")
             lines.append(words)
 
-num_workers = multiprocessing.cpu_count()
 
-w2v = Word2Vec(sg=1,  seed = 1,  size=100, window=7,sample = 1e-3,  min_count=3, workers=num_workers)
+
+w2v = Word2Vec(sg=1,  seed = 1,  size=100, window=7,sample = 1e-3,  min_count=25, workers=7)
 w2v.build_vocab(lines)
 #print(len(w2v.vocab))
 w2v.train(lines,  total_examples = w2v.corpus_count,  epochs = 10)
 pickleSave("w2v.pickle", w2v)
 endTime = time.clock()
 print(w2v.wv['love'])
-print(w2v.wv['donã'])
+
 print("Elapsed Minutes : " + str((endTime-startTime)/60))
